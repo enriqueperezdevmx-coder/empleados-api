@@ -1,0 +1,2 @@
+NAME              IMAGE       COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+empleados-mysql   mysql:8.4   "docker-entrypoint.s…"   mysql     13 minutes ago   Up 13 minutes (healthy)   0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp, 33060/tcp
