@@ -1,0 +1,3 @@
+id	nombre	apellidos	email	puesto	salario	activo
+1	Ana	López Hernández	ana.lopez@empresa.com	Desarrolladora Backend	35000.00	
+2	Luis	Martínez Ruiz	luis.martinez@empresa.com	Analista de Datos	28500.50	
