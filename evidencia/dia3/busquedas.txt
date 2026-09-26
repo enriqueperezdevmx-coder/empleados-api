@@ -1,0 +1,85 @@
+Evidencia búsquedas y paginación  2026-09-26 14:34 enrique perez sanchez
+
+### 1. Primera página por defecto (10 por id) 200
+GET 
+HTTP 200
+  pagina=0 tamano=10 totalElementos=2 totalPaginas=1 primera=True ultima=True
+ 1 Ana        López Hernández      | Tecnología   |  35000.0
+ 2 Luis       Martínez Ruiz        | Finanzas     |  28500.5
+
+### 2. Los 5 salarios más altos 200
+GET ?page=0&size=5&sort=salario,desc
+HTTP 200
+  pagina=0 tamano=5 totalElementos=2 totalPaginas=1 primera=True ultima=True
+ 1 Ana        López Hernández      | Tecnología   |  35000.0
+ 2 Luis       Martínez Ruiz        | Finanzas     |  28500.5
+
+### 3. La siguiente página de 5 200
+GET ?page=1&size=5&sort=salario,desc
+HTTP 200
+  pagina=1 tamano=5 totalElementos=2 totalPaginas=1 primera=False ultima=True
+
+### 4. size 1000 se recorta a 50 200
+GET ?size=1000
+HTTP 200
+  pagina=0 tamano=1000 totalElementos=2 totalPaginas=1 primera=True ultima=True
+ 1 Ana        López Hernández      | Tecnología   |  35000.0
+ 2 Luis       Martínez Ruiz        | Finanzas     |  28500.5
+
+### 5. Buscar departamento ventas (sin importar mayúsculas) 200
+GET /buscar?departamento=ventas
+HTTP 200
+  pagina=0 tamano=10 totalElementos=0 totalPaginas=0 primera=True ultima=True
+
+### 6. Buscar texto oscar (sin acento, encuentra Óscar) 200
+GET /buscar?texto=oscar
+HTTP 200
+  pagina=0 tamano=10 totalElementos=0 totalPaginas=0 primera=True ultima=True
+
+### 7. Buscar inactivos 200
+GET /buscar?activo=false
+HTTP 200
+  pagina=0 tamano=10 totalElementos=0 totalPaginas=0 primera=True ultima=True
+
+### 8. Buscar salario entre 30000 y 50000, del mayor al menor 200
+GET /buscar?salarioMinimo=30000&salarioMaximo=50000&sort=salario,desc
+HTTP 200
+  pagina=0 tamano=10 totalElementos=1 totalPaginas=1 primera=True ultima=True
+ 1 Ana        López Hernández      | Tecnología   |  35000.0
+
+### 9. Filtros combinados: tecnologia activos desde 30000 200
+GET /buscar?departamento=tecnologia&activo=true&salarioMinimo=30000
+HTTP 200
+  pagina=0 tamano=10 totalElementos=1 totalPaginas=1 primera=True ultima=True
+ 1 Ana        López Hernández      | Tecnología   |  35000.0
+
+### 10. Consulta derivada: departamento Finanzas por apellidos 200
+GET /departamento/Finanzas
+HTTP 200
+  1 empleados
+ 2 Luis       Martínez Ruiz        | Finanzas     |  28500.5
+
+### 11. Consulta derivada: salarios entre 40000 y 60000 200
+GET /salarios?minimo=40000&maximo=60000
+HTTP 200
+  0 empleados
+
+### 12. Ordenar por un campo que no existe 400
+GET ?sort=sueldo
+HTTP 400
+  {"detail": "No se puede ordenar por 'sueldo': ese campo no existe", "instance": "/api/empleados", "status": 400, "title": "Orden inválido"}
+
+### 13. Lo mismo en buscar 400
+GET /buscar?sort=sueldo
+HTTP 400
+  {"detail": "No se puede ordenar por 'sueldo': ese campo no existe", "instance": "/api/empleados/buscar", "status": 400, "title": "Orden inválido"}
+
+### 14. Falta un parametro obligatorio 400
+GET /salarios?minimo=40000
+HTTP 400
+  {"detail": "Falta el parámetro obligatorio 'maximo'", "instance": "/api/empleados/salarios", "status": 400, "title": "Parámetro faltante"}
+
+### 15. Un parámetro con tipo equivocado 400
+GET /buscar?activo=quizas
+HTTP 400
+  {"detail": "El valor 'quizas' no sirve para el parámetro 'activo'", "instance": "/api/empleados/buscar", "status": 400, "title": "Parámetro inválido"}
