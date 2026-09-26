@@ -1,0 +1,61 @@
+Evidencia CRUD  2026-09-26 15:02 enrique perez sanchez
+
+### 1. Crear empleado válido 201
+POST 
+{"id":33,"nombre":"Laura","apellidos":"Gómez","email":"laura.gomez@empresa.com","puesto":"Desarrolladora","departamento":"Tecnología","salario":35000,"fechaIngreso":"2024-01-15","activo":true}
+HTTP 201
+
+### 2. Email repetido 409
+POST 
+{"detail":"Ya existe un empleado con el email laura.gomez@empresa.com","instance":"/api/empleados","status":409,"title":"Email duplicado"}
+HTTP 409
+
+### 3. Validación fallida 400
+POST 
+{"detail":"Hay 7 campo(s) con errores","instance":"/api/empleados","status":400,"title":"Datos inválidos","errores":{"apellidos":"Los apellidos son obligatorios","departamento":"El departamento es obligatorio","email":"El email no tiene un formato válido","fechaIngreso":"La fecha de ingreso no puede ser futura","nombre":"El nombre es obligatorio","puesto":"El puesto es obligatorio","salario":"El salario debe ser mayor que cero"}}
+HTTP 400
+
+### 4. JSON mal formado 400
+POST 
+{"detail":"El cuerpo no es un JSON válido. Revisa comas y comillas, y que las fechas vayan como 2024-03-15","instance":"/api/empleados","status":400,"title":"JSON ilegible"}
+HTTP 400
+
+### 5. Listar todos 200
+GET 
+{"contenido":[{"id":1,"nombre":"Ana","apellidos":"López Hernández","email":"ana.lopez@empresa.com","puesto":"Desarrolladora Backend","departamento":"Tecnología","salario":35000.00,"fechaIngreso":"2024-03-15","activo":true},{"id":2,"nombre":"Luis","apellidos":"Martínez Ruiz","email":"luis.martinez@empresa.com","puesto":"Analista de Datos","departamento":"Finanzas","salario":28500.50,"fechaIngreso":"2023-08-01","activo":true},{"id":3,"nombre":"Mariana","apellidos":"Sánchez Ortega","email":"mariana.sanchez@academia.mx","puesto":"Desarrolladora Backend","departamento":"Tecnología","salario":42000.00,"fechaIngreso":"2021-02-15","activo":true},{"id":4,"nombre":"Jorge","apellidos":"Ramírez Luna","email":"jorge.ramirez@academia.mx","puesto":"Desarrollador Frontend","departamento":"Tecnología","salario":38500.00,"fechaIngreso":"2022-06-01","activo":true},{"id":5,"nombre":"Sofía","apellidos":"Hernández Cruz","email":"sofia.hernandez@academia.mx","puesto":"Arquitecta de Software","departamento":"Tecnología","salario":65000.00,"fechaIngreso":"2018-09-10","activo":true},{"id":6,"nombre":"Diego","apellidos":"Morales Vega","email":"diego.morales@academia.mx","puesto":"QA Tester","departamento":"Tecnología","salario":29000.00,"fechaIngreso":"2023-01-16","activo":true},{"id":7,"nombre":"Valeria","apellidos":"Torres Ríos","email":"valeria.torres@academia.mx","puesto":"DevOps","departamento":"Tecnología","salario":51000.00,"fechaIngreso":"2020-11-03","activo":true},{"id":8,"nombre":"Andrés","apellidos":"Flores Méndez","email":"andres.flores@academia.mx","puesto":"Soporte Técnico","departamento":"Tecnología","salario":18500.00,"fechaIngreso":"2024-04-22","activo":false},{"id":9,"nombre":"Camila","apellidos":"Gómez Reyes","email":"camila.gomez@academia.mx","puesto":"Contadora","departamento":"Finanzas","salario":36000.00,"fechaIngreso":"2019-03-11","activo":true},{"id":10,"nombre":"Ricardo","apellidos":"Díaz Navarro","email":"ricardo.diaz@academia.mx","puesto":"Analista Financiero","departamento":"Finanzas","salario":33000.00,"fechaIngreso":"2021-08-30","activo":true}],"pagina":0,"tamano":10,"totalElementos":33,"totalPaginas":4,"primera":true,"ultima":false}
+HTTP 200
+
+### 6. Buscar por ID existente 200
+GET /1
+{"id":1,"nombre":"Ana","apellidos":"López Hernández","email":"ana.lopez@empresa.com","puesto":"Desarrolladora Backend","departamento":"Tecnología","salario":35000.00,"fechaIngreso":"2024-03-15","activo":true}
+HTTP 200
+
+### 7. Buscar por ID inexistente 404
+GET /999
+{"detail":"No existe un empleado con id 999","instance":"/api/empleados/999","status":404,"title":"Empleado no encontrado"}
+HTTP 404
+
+### 8. Modificar empleado 200
+PUT /1
+{"id":1,"nombre":"Mariana","apellidos":"Sánchez Actualizada","email":"mariana.actualizada@academia.mx","puesto":"Líder Técnica","departamento":"Tecnología","salario":55000,"fechaIngreso":"2021-02-15","activo":true}
+HTTP 200
+
+### 9. Modificar con email de otro 409
+PUT /1
+{"detail":"Ya existe un empleado con el email jorge.ramirez@academia.mx","instance":"/api/empleados/1","status":409,"title":"Email duplicado"}
+HTTP 409
+
+### 10. Modificar ID inexistente 404
+PUT /999
+{"detail":"No existe un empleado con id 999","instance":"/api/empleados/999","status":404,"title":"Empleado no encontrado"}
+HTTP 404
+
+### 11. Eliminar empleado 204
+DELETE /1
+
+HTTP 204
+
+### 12. Eliminar ID inexistente 404
+DELETE /999
+{"detail":"No existe un empleado con id 999","instance":"/api/empleados/999","status":404,"title":"Empleado no encontrado"}
+HTTP 404
